@@ -71,15 +71,14 @@ If you find our framework useful in your research, please consider citing:
   git clone --recursive https://github.com/sherleens/AR_discovery.git
   ```
 2. Build Caffe and matcaffe
-    ```Shell
-    cd $AR_ROOT/caffe
-    # Now follow the Caffe installation instructions here:
-    #   http://caffe.berkeleyvision.org/installation.html
-
-    # If you're experienced with Caffe and have all of the requirements installed
-    # and your Makefile.config in place, then simply do:
-    make all -j 8 && make matcaffe
-    ```
+  ```Shell
+  cd $AR_ROOT/caffe
+  # Now follow the Caffe installation instructions here
+  #   http://caffe.berkeleyvision.org/installation.html
+  # If you're experienced with Caffe and have all of the requirements installed
+  # and your Makefile.config in place, then simply do:
+  make all -j 8 && make matcaffe
+  ```
 
 ### Download pre-computed object proposals
 
