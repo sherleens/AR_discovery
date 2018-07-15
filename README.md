@@ -64,7 +64,7 @@ If you find our framework useful in your research, please consider citing:
 
 1. NVIDIA GTX TITANX (~12G of memory)
 
-### Installation (sufficient for the demo)
+### Installation
 
 1. Clone the repository
   ```Shell
