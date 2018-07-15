@@ -57,8 +57,7 @@ If you find our framework useful in your research, please consider citing:
   # MATLAB directory should contain the mex binary in /bin.
   MATLAB_DIR := /usr/local
   ```
-
-3. MATLAB
+2. MATLAB
 
 ### Requirements: hardware
 
@@ -71,8 +70,7 @@ If you find our framework useful in your research, please consider citing:
   # Make sure to clone with --recursive
   git clone --recursive https://github.com/sherleens/AR_discovery.git
   ```
-
-3. Build Caffe and matcaffe
+2. Build Caffe and matcaffe
     ```Shell
     cd $AR_ROOT/caffe
     # Now follow the Caffe installation instructions here:
