@@ -1,0 +1,3 @@
+[submodule "caffe-master"]
+	path = caffe-master
+	url = https://github.com/BVLC/caffe.git
