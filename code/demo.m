@@ -48,7 +48,9 @@ k = 20;
 alpha = 0.6;
 beta = 0.3;
 
-[~,box_fc8] = extract_myfeature(model_def,model_file,imgname,imsize,path,candidate_box);
+[~,box_fc8] = extract_boxfeature(model_def,model_file,imgname,imsize,path,candidate_box);
+[~,im_ft8] = extract_imfeature(model_def,model_file,imgname,imsize,path);
+
 for i = 1:length(imgname)
     ss = (i-1)*m+1;
     ee = i*m;
@@ -62,7 +64,7 @@ for i = 1:length(imgname)
     % calculate AR_score
     AR_score = (1-alpha)*senti_score_norm + alpha*obj_score_norm;
     [c,d] = sort(AR_score,'descend');
-    global_f = ft_ft8(i,:);
+    global_f = im_ft8(i,:);
     if k==1
         local_f = (box_pre(d(1:k),:));
     else
@@ -70,13 +72,15 @@ for i = 1:length(imgname)
     end
     % sum pooling
     final_f1(i,:) = (1-beta)*global_f + beta*local_f; 
-    % concanation
-    final_f2(i,:) = [global_f local_f];
     % max pooling
-    final_f3(i,1) = max(global_f(1),local_f(1)); 
-    final_f3(i,2) = max(global_f(2),local_f(2));
+    final_f2(i,1) = max(global_f(1),local_f(1)); 
+    final_f2(i,2) = max(global_f(2),local_f(2));
+    % concanation
+    final_f3(i,:) = [global_f local_f];
 end
-[~,acc1] = classify(~test_ind,test_ind,label2,final_f1);
-[~,acc2] = classify(~test_ind,test_ind,label2,final_f2);
-[~,acc3] = classify(~test_ind,test_ind,label2,final_f3);
-result = [acc1 acc2 acc3]
+% [~,acc_sp] = classify(~test_ind,test_ind,label2,final_f1);
+% [~,acc_mp] = classify(~test_ind,test_ind,label2,final_f2);
+% [~,acc_con] = classify(~test_ind,test_ind,label2,final_f3);
+[~,acc_sp] = classify_fc8(final_f1,label2);
+[~,acc_mp] = classify_fc8(final_f2,label2);
+
