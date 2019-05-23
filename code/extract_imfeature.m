@@ -13,8 +13,8 @@
 % -feat_fc8: features from FC8 layer [N x 8]
 %-----------------------------------------------
 function [feat_fc7,feat_fc8]=extract_imfeature(model_def,model_file,imgname,imsize,path)
-
-addpath('~/sdy/caffe-master/matlab/');
+Caffe_path = '/home/ubuntu2/yxx2/caffe-master/matlab/';
+addpath(Caffe_path);
 caffe.set_mode_gpu();
 gpu_id = 0;  % we will use the first gpu in this demo
 caffe.set_device(gpu_id);
@@ -28,7 +28,7 @@ end
 % Initialize a network
 net = caffe.Net(model_def, model_file, phase);
 % get batch
-batch_size =100;
+batch_size =20;
 crop_size = imsize;
 for i = 1: length(imgname)
     imgpath{1,i}  = imgname{i};
@@ -56,7 +56,7 @@ for batch = 1 : num_batches
                 img(:, :, 3) = im;
                 im = img;
             end
-            ims(:,:,:,(j-batch_start)*10+1:(j-batch_start+1)*10) = prepare_image(im,imsize);
+            ims(:,:,:,(j-batch_start)*10+1:(j-batch_start+1)*10) = prepare_image(Caffe_path,im,imsize);
         catch
             disp('imread fail');
         end
@@ -78,13 +78,12 @@ for j = 1:length(batches)
     global_f = net.blobs('fc7').get_data(); 
     global_f = global_f(:);
     %fc8
-    f = net.blobs('my_fc8').get_data(); 
+    f = net.blobs('prob').get_data(); 
     f = f(:);
     if j == 1 % first batch, init feat_dim and feat
         feat_dim = length(f)/batch_size;
         feat_dim_g = length( global_f)/batch_size;
-        feat_fc8 = zeros(size(imgpath, 2), feat_dim, 'single');
-        feat_fc7 = zeros(size(imgpath, 2), feat_dim_g, 'single');
+        feat_fc7=[];feat_fc8=[];
     end
     f = reshape(f, [feat_dim batch_size]);
     global_f = reshape(global_f, [feat_dim_g batch_size]);
@@ -96,9 +95,11 @@ for j = 1:length(batches)
     end
     tmp1=[];tmp2=[];
     for kk = 1: 10 : size(f,2)
-        tmp1 = [tmp2;mean(global_f(:,kk:kk+9),2)'];
-        tmp2 = [tmp1;mean(f(:,kk:kk+9),2)'];
+        tmp1 = [tmp1;mean(global_f(:,kk:kk+9),2)'];
+        tmp2 = [tmp2;mean(f(:,kk:kk+9),2)'];
     end
+%     size(feat_fc7)
+%     size(tmp1)
     feat_fc7 = [feat_fc7; tmp1];
     feat_fc8 = [feat_fc8; tmp2];
 end
@@ -106,11 +107,9 @@ caffe.reset_all();
 end
 
 % ------------------------------------------------------------------------
-function crops_data = prepare_image(im,imsize)
+function crops_data = prepare_image(Caffe_path,im,imsize)
 % ------------------------------------------------------------------------
-% caffe/matlab/+caffe/imagenet/ilsvrc_2012_mean.mat contains mean_data that
-% is already in W x H x C with BGR channels
-d = load('~/caffe-master/matlab/+caffe/imagenet/ilsvrc_2012_mean.mat');
+d = load([Caffe_path,'+caffe/imagenet/ilsvrc_2012_mean.mat']);
 mean_data = d.mean_data;
 IMAGE_DIM = 256;
 CROPPED_DIM = imsize;

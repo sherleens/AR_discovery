@@ -1,0 +1,15 @@
+net: "vgg_train_val_FI_c2.prototxt"
+test_iter: 71
+test_interval: 600
+base_lr: 0.0001
+lr_policy: "step"
+gamma: 0.1
+stepsize: 4000
+display: 300
+max_iter: 20000
+momentum: 0.9
+weight_decay: 0.0005
+snapshot: 4000
+snapshot_prefix: "models/fi/finetune_fi_vgg16_class2_v1"
+solver_mode: GPU
+ 
