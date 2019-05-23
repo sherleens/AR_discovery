@@ -99,7 +99,7 @@ cd prototxt && bash ./train_vgg_FI.sh
 **Test** a deep network. For example, test the VGG 16 network on FI test:
 
 ```
-run demo.m
+run demo.m in matlab
 ```
 
 The final prediction is saved in code/result.txt
@@ -107,4 +107,7 @@ The final prediction is saved in code/result.txt
 ### Our trained models
 
 The models trained on the FI dataset can be downloaded from [here](https://pan.baidu.com/s/1BjjSDvC0tuJmbmuhssetqQ) (password: kai7).
+<<<<<<< HEAD
 
+=======
+>>>>>>> 67f963aaa6ad5c0f2ec83c47960854fd196bdb2f
